@@ -8,6 +8,7 @@ import { BiSearch } from "react-icons/bi";
 
 import Box from "./Box";
 import SidebarItem from "./SidebarItem";
+import Library from "./Library";
 
 // Interface SidebarProps contains ReactNode children
 interface SidebarProps {
@@ -21,7 +22,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
 
   // Create an array of possible routes for site navigation
   // The "Home" label will be active any time the pathname isn't "/search"
-  // The state of "pathname" is added to the list of dependency arrays
+  // The state of "pathname" is added to the list of dependencies
   const routes = useMemo(() => [
     {
       label: "Home",
@@ -37,13 +38,14 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
     }
   ], [pathname]);
 
-  // Render Box components in the sidebar
-  // The first Box component iterates over the routes array
-  // and renders a SidebarItem for each possible route
-  // The second Box component contains the user's music library
+  // Render Box components in the sidebar and children in the center
+  // of the screen. The first Box component iterates over the routes array
+  // and renders a SidebarItem for each possible route. The second Box
+  // component contains the user's music library.
   return (
     <div className="flex h-full">
-      <div className="hidden md:flex flex-col gap-y-2 h-full w-[300px] p-2 bg-black">
+      <div className="hidden md:flex flex-col gap-y-2 h-full w-[300px] 
+        p-2 bg-black">
         <Box>
           <div className="flex flex-col gap-y-4 px-5 py-4">
             {routes.map((item) => (
@@ -51,10 +53,13 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
             ))}
           </div>
         </Box>
-        <Box className="h-full overflow-y-auto">
-          Song Library
+        <Box className="overflow-y-auto h-full">
+          <Library />
         </Box>
       </div>
+      <main className="h-full flex-1 overflow-y-auto py-2">
+        {children}
+      </main>
     </div>
   );
 }
