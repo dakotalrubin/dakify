@@ -10,7 +10,7 @@ import Box from "./Box";
 import SidebarItem from "./SidebarItem";
 import Library from "./Library";
 
-// Interface SidebarProps contains ReactNode children
+// SidebarProps interface contains ReactNode children
 interface SidebarProps {
   children: React.ReactNode;
 }

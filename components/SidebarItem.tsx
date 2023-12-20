@@ -2,7 +2,7 @@ import { IconType } from "react-icons";
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 
-// Interface SidebarItemProps contains an icon, label, href
+// SidebarItemProps interface contains an icon, label, href
 // and optional active bool
 interface SidebarItemProps {
   icon: IconType;

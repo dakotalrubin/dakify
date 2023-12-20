@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
 
-// Interface BoxProps contains ReactNode children and optional className string
+// BoxProps interface contains ReactNode children and optional className string
 interface BoxProps {
   children: React.ReactNode;
   className?: string;
