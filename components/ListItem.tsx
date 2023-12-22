@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { FaPlay } from "react-icons/fa";
 
-// ListItemProps interface contains image, name and href string
+// ListItemProps interface contains image, name and href strings
 interface ListItemProps {
   image: string;
   name: string;
