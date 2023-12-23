@@ -1,4 +1,4 @@
-// Required for client component to use React hooks
+// Required for client provider to use React hooks
 "use client";
 
 import { useState } from "react";

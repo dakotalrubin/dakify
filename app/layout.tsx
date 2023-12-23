@@ -4,6 +4,7 @@ import './globals.css'
 
 import Sidebar from "@/components/Sidebar";
 import SupabaseProvider from "@/providers/SupabaseProvider";
+import UserProvider from "@/providers/UserProvider";
 
 const font = Figtree({ subsets: ['latin'] })
 
@@ -18,14 +19,16 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   // Render ReactNode children from Sidebar component wrapped within a
-  // SupabaseProvider user session
+  // UserProvider component within a SupabaseProvider user session
   return (
     <html lang="en">
       <body className={font.className}>
         <SupabaseProvider>
-          <Sidebar>
-            {children}
-          </Sidebar>
+          <UserProvider>
+            <Sidebar>
+              {children}
+            </Sidebar>
+          </UserProvider>
         </SupabaseProvider>
       </body>
     </html>
