@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 
-import Modal from "@/components/Modal";
+import AuthModal from "@/components/AuthModal";
 
 // ModalProvider component only renders client-side modals
 const ModalProvider = () => {
@@ -26,14 +26,7 @@ const ModalProvider = () => {
   // Render a modal component with hard-coded props
   return (
     <>
-      <Modal
-        title="Test Modal"
-        description="Test description."
-        isOpen
-        onChange={() => {}}
-      >
-        Test Children
-      </Modal>
+      <AuthModal />
     </>
   );
 }

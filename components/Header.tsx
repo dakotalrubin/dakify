@@ -6,7 +6,9 @@ import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
+
 import Button from "./Button";
+import useAuthModal from "@/hooks/useAuthModal";
 
 // HeaderProps interface contains ReactNode children
 // and optional className string
@@ -18,6 +20,9 @@ interface HeaderProps {
 // Header component accepts ReactNode children and optional className string
 // from HeaderProps interface
 const Header: React.FC<HeaderProps> = ({ children, className }) => {
+  // Extract the onOpen method from useAuthModal hook
+  const { onOpen } = useAuthModal();
+
   // Use a React hook that allows you to handle page routing state
   const router = useRouter();
 
@@ -61,13 +66,13 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
           <>
             <div>
               <Button className="font-medium bg-transparent text-neutral-300"
-                onClick={() => {}}>
+                onClick={onOpen}>
                 Sign Up
               </Button>
             </div>
             <div>
               <Button className="px-6 py-2 bg-white"
-                onClick={() => {}}>
+                onClick={onOpen}>
                 Log In
               </Button>
             </div>
