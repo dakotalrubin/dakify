@@ -48,7 +48,7 @@ const AuthModal = () => {
     }
   }
 
-  // Render the authentication modal with certain settings
+  // Render the authentication modal with defined settings
   return (
     <Modal
       title="Welcome back!"

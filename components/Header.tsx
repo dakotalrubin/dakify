@@ -6,9 +6,13 @@ import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
+import { FaUserAlt } from "react-icons/fa";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { toast } from "react-hot-toast";
 
 import Button from "./Button";
 import useAuthModal from "@/hooks/useAuthModal";
+import { useUser } from "@/hooks/useUser";
 
 // HeaderProps interface contains ReactNode children
 // and optional className string
@@ -26,14 +30,34 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
   // Use a React hook that allows you to handle page routing state
   const router = useRouter();
 
+  // Get Supabase client methods from useSupabaseClient hook
+  const supabaseClient = useSupabaseClient();
+
+  // Extract user data from useUser hook to check subscription status
+  const { user, subscription } = useUser();
+
   // Allow the user to log out of their account
-  const handleLogout = () => {
-    // Handle logging out here!
+  const handleLogout = async () => {
+    // Wait for a Promise to be returned
+    const { error } = await supabaseClient.auth.signOut();
+
+    // Reset any song playing after logging out
+    router.refresh();
+
+    // If there's a logout error, show the user a notification
+    // with the error message. Otherwise show a success message.
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.success("Logout successful.");
+    }
   }
 
   // Render the app header bar: includes back and forward page routing buttons,
-  // along with Sign Up and Log In buttons
-  // The second chunk of code below shows page routing buttons for mobile view
+  // along with Sign Up and Login buttons.
+  // The second chunk of code below shows page routing buttons for mobile view.
+  // If a user is logged in, render an account details button and
+  // a Logout button instead of Sign Up and Login buttons.
   return (
     <div className={twMerge(`h-fit bg-gradient-to-b from-emerald-800 p-6`, 
       className)}>
@@ -63,20 +87,33 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
         </div>
 
         <div className="flex justify-between items-center gap-x-4">
-          <>
-            <div>
-              <Button className="font-medium bg-transparent text-neutral-300"
-                onClick={onOpen}>
-                Sign Up
-              </Button>
-            </div>
-            <div>
+          {user ? (
+            <div className="flex items-center gap-x-4">
               <Button className="px-6 py-2 bg-white"
-                onClick={onOpen}>
-                Log In
+                onClick={handleLogout}>
+                Logout
+              </Button>
+              <Button className="bg-white"
+                onClick={() => router.push("/account")}>
+                <FaUserAlt />
               </Button>
             </div>
-          </>
+          ) : (
+            <>
+              <div>
+                <Button className="font-medium bg-transparent text-neutral-300"
+                  onClick={onOpen}>
+                  Sign Up
+                </Button>
+              </div>
+              <div>
+                <Button className="px-6 py-2 bg-white"
+                  onClick={onOpen}>
+                  Login
+                </Button>
+              </div>
+            </>
+          )}
         </div>
       </div>
       {children}

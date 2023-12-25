@@ -23,7 +23,7 @@ const ModalProvider = () => {
     return null;
   }
 
-  // Render a modal component with hard-coded props
+  // Render AuthModal component
   return (
     <>
       <AuthModal />
