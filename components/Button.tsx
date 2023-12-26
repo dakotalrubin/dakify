@@ -1,9 +1,9 @@
 import { forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 
-// ButtonProps interface extends normal HTML button attributes
+// ButtonProps interface extends normal HTML Button attributes
 interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>{}
 
 // Button component extracts className, children, disabled, type, props
 // and ref, then forwards all normal and extended HTML button attributes
