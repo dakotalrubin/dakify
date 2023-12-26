@@ -41,14 +41,14 @@ const AuthModal = () => {
   }, [session, router, onClose]);
 
   // onChange method accepts an open boolean and closes the auth modal
-  // if it's open
+  // if it was open
   const onChange = (open: boolean) => {
     if (!open) {
       onClose();
     }
   }
 
-  // Render the authentication modal with defined settings
+  // Render the auth modal with defined settings
   return (
     <Modal
       title="Welcome back!"

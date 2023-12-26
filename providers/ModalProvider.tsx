@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 
 import AuthModal from "@/components/AuthModal";
+import UploadModal from "@/components/UploadModal";
 
 // ModalProvider component only renders client-side modals
 const ModalProvider = () => {
@@ -23,10 +24,11 @@ const ModalProvider = () => {
     return null;
   }
 
-  // Render AuthModal component
+  // Render AuthModal and UploadModal components
   return (
     <>
       <AuthModal />
+      <UploadModal />
     </>
   );
 }

@@ -4,11 +4,32 @@
 import { TbPlaylist } from "react-icons/tb";
 import { AiOutlinePlus } from "react-icons/ai";
 
+import useAuthModal from "@/hooks/useAuthModal";
+import useUploadModal from "@/hooks/useUploadModal";
+import { useUser } from "@/hooks/useUser";
+
 // Library component
 const Library = () => {
+  // Allow the use of AuthModal methods from the useAuthModal hook
+  const authModal = useAuthModal();
+
+  // Allow the use of UploadModal methods from the useUploadModal hook
+  const uploadModal = useUploadModal();
+
+  // Extract user info and subscription status from custom useUser hook
+  const { user, subscription } = useUser();
+
   // Open a music upload modal
   const onClick = () => {
-    // Handle music uploading here!
+    // Open an auth modal if the user isn't logged in
+    if (!user) {
+      return authModal.onOpen();
+    }
+
+    // Check for subscription status
+    // ...
+
+    return uploadModal.onOpen();
   };
 
   // Render the user's music library
