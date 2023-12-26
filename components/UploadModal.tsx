@@ -3,20 +3,30 @@
 
 import { useState } from "react";
 import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
+import { toast } from "react-hot-toast";
+import uniqid from "uniqid";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 import Modal from "./Modal";
 import useUploadModal from "@/hooks/useUploadModal";
 import Input from "./Input";
 import Button from "./Button";
+import { useUser } from "@/hooks/useUser";
 
-// UploadModal component extracts useUploadModal methods
+// UploadModal component extracts useUploadModal and useForm methods
 // and renders the upload modal so users can post their own music files
 const UploadModal = () => {
+  // Extract user info from custom useUser hook
+  const { user } = useUser();
+
   // Allow the use of UploadModal methods from the useUploadModal hook
   const uploadModal = useUploadModal();
 
+  // Get Supabase client methods from useSupabaseClient hook
+  const supabaseClient = useSupabaseClient();
+
   // Create variable to track loading state
-  const [isLoading, setIsLoading] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   // Extract properties from the useForm hook with given default values
   const { register, handleSubmit, reset } = useForm<FieldValues>({
@@ -42,7 +52,76 @@ const UploadModal = () => {
   // Asynchronously upload the user's song to Supabase storage
   // using SubmitHandler and passed values (title, artist, song and image)
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-    // Try to upload the user's song to Supabase
+    // Try to upload the user's song to Supabase and display errors
+    try {
+      // Update loading state
+      setIsLoading(true);
+
+      // Extract image and song file
+      const imageFile = values.image?.[0];
+      const songFile = values.song?.[0];
+
+      // Check whether there's an active user, an image file and a song file.
+      // If there's an error, show an error toast and return from the
+      // onSubmit method.
+      if (!user || !imageFile || !songFile) {
+        toast.error("Missing fields!");
+        return;
+      }
+
+      // Continue with the song uploading process
+      // Ensure every song upload carries a unique ID
+      const uniqueID = uniqid();
+
+      // Upload the user's song to Supabase storage!
+      // Extract song data and error attributes from supabaseClient's "songs"
+      // bucket after uploading the song with the unique ID generated earlier.
+      // The "cacheControl" option caches the song in the web browser and the
+      // Supabase CDN for 3600 seconds. The "upsert" option throws an error
+      // if the song already exists in the database when set to "false".
+      const {
+        data: songData,
+        error: songError,
+      } = await supabaseClient.storage.from("songs")
+        .upload(`song-${values.title}-${uniqueID}`, songFile, {
+          cacheControl: "3600",
+          upsert: false
+        });
+
+      // If problem occurs during song upload, deload and show an error message
+      if (songError) {
+        setIsLoading(false);
+        const songErrorMessage = toast.error("Song upload to database failed!");
+        return songErrorMessage;
+      }
+
+      // Upload the user's image to Supabase storage!
+      // Extract image data and error attributes from supabaseClient's "images"
+      // bucket after uploading the image with the unique ID generated earlier.
+      // The "cacheControl" option caches the image in the web browser and the
+      // Supabase CDN for 3600 seconds. The "upsert" option throws an error
+      // if the image already exists in the database when set to "false".
+      const {
+        data: imageData,
+        error: imageError,
+      } = await supabaseClient.storage.from("images")
+        .upload(`image-${values.title}-${uniqueID}`, imageFile, {
+          cacheControl: "3600",
+          upsert: false
+        });
+
+      // If problem occurs during image upload, deload and show an error message
+      if (imageError) {
+        setIsLoading(false);
+        const imageErrorMessage = toast.error("Image upload to database failed!");
+        return imageErrorMessage;
+      }
+    } catch (error) {
+      toast.error("Upload process failed!");
+    } finally {
+      // Update loading state to false afterwards no matter what
+      setIsLoading(false);
+    }
   }
 
   // Render the upload modal with a music upload form that has several fields.
@@ -96,7 +175,7 @@ const UploadModal = () => {
           />
         </div>
         <Button type="submit" disabled={isLoading}>
-          Create
+          Add Song
         </Button>
       </form>
     </Modal>
