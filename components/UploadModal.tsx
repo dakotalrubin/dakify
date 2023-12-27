@@ -6,6 +6,7 @@ import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import uniqid from "uniqid";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useRouter } from "next/navigation";
 
 import Modal from "./Modal";
 import useUploadModal from "@/hooks/useUploadModal";
@@ -25,6 +26,9 @@ const UploadModal = () => {
   // Get Supabase client methods from useSupabaseClient hook
   const supabaseClient = useSupabaseClient();
 
+  // Get router methods from useRouter hook
+  const router = useRouter();
+
   // Create variable to track loading state
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,7 +36,7 @@ const UploadModal = () => {
   const { register, handleSubmit, reset } = useForm<FieldValues>({
     defaultValues: {
       title: "",
-      artist: "",
+      author: "",
       song: null,
       image: null,
     }
@@ -50,7 +54,7 @@ const UploadModal = () => {
   }
 
   // Asynchronously upload the user's song to Supabase storage
-  // using SubmitHandler and passed values (title, artist, song and image)
+  // using SubmitHandler and passed values (title, author, song and image)
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
     // Try to upload the user's song to Supabase and display errors
     try {
@@ -69,8 +73,7 @@ const UploadModal = () => {
         return;
       }
 
-      // Continue with the song uploading process
-      // Ensure every song upload carries a unique ID
+      // Ensure every song upload has a unique ID
       const uniqueID = uniqid();
 
       // Upload the user's song to Supabase storage!
@@ -116,8 +119,39 @@ const UploadModal = () => {
         const imageErrorMessage = toast.error("Image upload to database failed!");
         return imageErrorMessage;
       }
+
+      // Use an SQL insert query to write to the "songs" table in the database
+      // with given attributes
+      const {
+        error: insertError
+      } = await supabaseClient.from("songs")
+        .insert({
+          user_id: user.id,
+          title: values.title,
+          author: values.author,
+          image_path: imageData.path,
+          song_path: songData.path
+        });
+
+      // If problem occurs during song insert, deload and show an error message
+      if (insertError) {
+        setIsLoading(false);
+        const insertErrorMessage = toast.error(insertError.message);
+        return insertErrorMessage;
+      }
+
+      // Refresh page to update the song list, deload, display success message
+      router.refresh();
+      setIsLoading(false);
+      toast.success("Song added!");
+
+      // Reset the song upload form and close the upload modal
+      reset();
+      uploadModal.onClose();
+
     } catch (error) {
       toast.error("Upload process failed!");
+
     } finally {
       // Update loading state to false afterwards no matter what
       setIsLoading(false);
@@ -145,10 +179,10 @@ const UploadModal = () => {
           {...register("title", { required: true})}
         />
         <Input
-          id="artist"
+          id="author"
           placeholder="Artist"
           disabled={isLoading}
-          {...register("artist", { required: true})}
+          {...register("author", { required: true})}
         />
         <div>
           <div className="pb-1">
