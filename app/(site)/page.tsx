@@ -1,7 +1,15 @@
 import Header from "@/components/Header";
 import ListItem from "@/components/ListItem";
+import getSongs from "@/actions/getSongs";
+import PageContent from "./components/PageContent";
 
-export default function Home() {
+// Data on the web page will always be up-to-date
+export const revalidate = 0;
+
+export default async function Home() {
+  // Before anything else, make sure to retrieve current song list!
+  const songs = await getSongs();
+
   // Render titles, playlists and songs
   return (
     <div className="rounded-lg h-full w-full overflow-hidden 
@@ -24,9 +32,7 @@ export default function Home() {
             New Songs
           </h1>
         </div>
-        <div>
-          Song List
-        </div>
+        <PageContent songs={songs}/>
       </div>
     </div>
   )
