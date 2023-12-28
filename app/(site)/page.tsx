@@ -32,7 +32,7 @@ export default async function Home() {
             New Songs
           </h1>
         </div>
-        <PageContent songs={songs}/>
+        <PageContent songs={songs} />
       </div>
     </div>
   )
