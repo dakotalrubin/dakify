@@ -9,14 +9,17 @@ import { BiSearch } from "react-icons/bi";
 import Box from "./Box";
 import SidebarItem from "./SidebarItem";
 import Library from "./Library";
+import { Song } from "@/types";
 
-// SidebarProps interface contains ReactNode children
+// SidebarProps interface contains ReactNode children and array of user songs
 interface SidebarProps {
   children: React.ReactNode;
+  songs: Song[];
 }
 
-// Sidebar component accepts ReactNode children from SidebarProps interface
-const Sidebar: React.FC<SidebarProps> = ({ children }) => {
+// Sidebar component accepts ReactNode children and array of user songs
+// from SidebarProps interface
+const Sidebar: React.FC<SidebarProps> = ({ children, songs }) => {
   // Use a React hook that allows you to read the current URL's pathname
   const pathname = usePathname();
 
@@ -54,7 +57,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children }) => {
           </div>
         </Box>
         <Box className="overflow-y-auto h-full">
-          <Library />
+          <Library songs={songs} />
         </Box>
       </div>
       <main className="h-full flex-1 overflow-y-auto py-2">

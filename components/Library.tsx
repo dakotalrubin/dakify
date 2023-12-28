@@ -7,9 +7,16 @@ import { AiOutlinePlus } from "react-icons/ai";
 import useAuthModal from "@/hooks/useAuthModal";
 import useUploadModal from "@/hooks/useUploadModal";
 import { useUser } from "@/hooks/useUser";
+import { Song } from "@/types";
+import LibraryItem from "./LibraryItem";
 
-// Library component
-const Library = () => {
+// LibraryProps interface contains an array of user songs
+interface LibraryProps {
+  songs: Song[];
+}
+
+// Library component accepts an array of user songs from LibraryProps interface
+const Library: React.FC<LibraryProps> = ({ songs }) => {
   // Allow the use of AuthModal methods from the useAuthModal hook
   const authModal = useAuthModal();
 
@@ -46,7 +53,13 @@ const Library = () => {
           cursor-pointer hover:text-white transition" />
       </div>
       <div className="flex flex-col gap-y-2 mt-4 px-3">
-        Song List
+        {songs.map((item) => (
+          <LibraryItem
+            key={item.id}
+            data={item}
+            onClick={() => {}}
+          />
+        ))}
       </div>
     </div>
   );

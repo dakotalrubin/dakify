@@ -3,7 +3,7 @@ import ListItem from "@/components/ListItem";
 import getSongs from "@/actions/getSongs";
 import PageContent from "./components/PageContent";
 
-// Data on the web page will always be up-to-date
+// Data on the web page will always be up-to-date. The page won't be cached.
 export const revalidate = 0;
 
 export default async function Home() {
