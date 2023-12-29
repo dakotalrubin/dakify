@@ -1,6 +1,7 @@
 import getSongsByTitle from "@/actions/getSongsByTitle";
 import Header from "@/components/Header";
 import SearchInput from "@/components/SearchInput";
+import SearchItems from "./components/SearchItems";
 
 // SearchProps interface contains a title string
 interface SearchProps {
@@ -14,7 +15,8 @@ const Search = async ({ searchParams }: SearchProps) => {
   // Asynchronously fetch song list with given title from searchParams
   const songs = await getSongsByTitle(searchParams.title);
 
-  // Render the fetched song list on the Search page
+  // Render the SearchInput component and the fetched song list
+  // on the Search page
   return (
     <div className="h-full w-full rounded-lg overflow-hidden overflow-y-auto 
       bg-neutral-900">
@@ -26,6 +28,7 @@ const Search = async ({ searchParams }: SearchProps) => {
           <SearchInput />
         </div>
       </Header>
+      <SearchItems songs={songs} />
     </div>
   );
 }
