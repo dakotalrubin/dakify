@@ -4,6 +4,7 @@
 import usePlayer from "@/hooks/usePlayer";
 import useGetSongByID from "@/hooks/useGetSongByID";
 import useLoadSongUrl from "@/hooks/useLoadSongUrl";
+import PlayerContent from "./PlayerContent";
 
 // Player component renders the music player
 const Player = () => {
@@ -23,9 +24,17 @@ const Player = () => {
     return null;
   }
 
+  // Render all player content. The key prop is necessary to destroy and
+  // recreate the Player component every time the song URL changes, so
+  // users will have the ability to skip songs, seamlessly updating the player
+  // before loading the new song.
   return (
     <div className="fixed bottom-0 h-[80px] w-full px-4 py-2 bg-black">
-      Player
+      <PlayerContent
+        song={song}
+        songUrl={songUrl}
+        key={songUrl}
+      />
     </div>
   );
 }
