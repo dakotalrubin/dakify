@@ -3,6 +3,9 @@ import Header from "@/components/Header";
 import SearchInput from "@/components/SearchInput";
 import SearchItems from "./components/SearchItems";
 
+// Data on the web page will always be up-to-date. The page won't be cached.
+export const revalidate = 0;
+
 // SearchProps interface contains a title string
 interface SearchProps {
   searchParams: {
