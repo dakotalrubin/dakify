@@ -8,6 +8,7 @@ import UserProvider from "@/providers/UserProvider";
 import ModalProvider from "@/providers/ModalProvider";
 import ToasterProvider from "@/providers/ToasterProvider";
 import getSongsByUserID from "@/actions/getSongsByUserID";
+import Player from "@/components/Player";
 
 const font = Figtree({ subsets: ['latin'] })
 
@@ -27,9 +28,9 @@ export default async function RootLayout({
   // Fetch a specific user's songs from Supabase
   const userSongs = await getSongsByUserID();
 
-  // Render ReactNode children from Sidebar component wrapped within a
-  // UserProvider component within a SupabaseProvider user session
-  // Also render a ToasterProvider component for basic notification styles
+  // Render the Sidebar component within a UserProvider component within a
+  // SupabaseProvider user session. Dynamically render the Player component.
+  // Also render a ToasterProvider component for basic user notifications.
   return (
     <html lang="en">
       <body className={font.className}>
@@ -40,6 +41,7 @@ export default async function RootLayout({
             <Sidebar songs={userSongs}>
               {children}
             </Sidebar>
+            <Player />
           </UserProvider>
         </SupabaseProvider>
       </body>

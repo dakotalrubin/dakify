@@ -3,6 +3,7 @@
 
 import { Song } from "@/types";
 import SongItem from "@/components/SongItem";
+import useOnPlay from "@/hooks/useOnPlay";
 
 // PageContentProps interface contains a songs array
 interface PageContentProps {
@@ -11,6 +12,9 @@ interface PageContentProps {
 
 // PageContent component accepts a songs array from PageContentProps interface
 const PageContent: React.FC<PageContentProps> = ({ songs }) => {
+  // Create on-click functionality for the player from the useOnPlay hook
+  const onPlay = useOnPlay(songs);
+
   // Check if the songs array is empty
   if (songs.length < 1) {
     return (
@@ -27,7 +31,7 @@ const PageContent: React.FC<PageContentProps> = ({ songs }) => {
       sm:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-8">
       {songs.map((item) => (
         <SongItem data={item} key={item.id}
-          onClick={() => {}}
+          onClick={(id: string) => onPlay(id)}
         />
       ))}
     </div>
