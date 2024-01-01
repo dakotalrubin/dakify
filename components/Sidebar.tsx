@@ -5,11 +5,13 @@ import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
+import { twMerge } from "tailwind-merge";
 
 import Box from "./Box";
 import SidebarItem from "./SidebarItem";
 import Library from "./Library";
 import { Song } from "@/types";
+import usePlayer from "@/hooks/usePlayer";
 
 // SidebarProps interface contains ReactNode children and array of user songs
 interface SidebarProps {
@@ -22,6 +24,9 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ children, songs }) => {
   // Use a React hook that allows you to read the current URL's pathname
   const pathname = usePathname();
+
+  // Create a player instance with default values from the usePlayer hook
+  const player = usePlayer();
 
   // Create an array of possible routes for site navigation
   // The "Home" label will be active any time the pathname isn't "/search"
@@ -44,9 +49,12 @@ const Sidebar: React.FC<SidebarProps> = ({ children, songs }) => {
   // Render Box components in the sidebar and children in the center
   // of the screen. The first Box component iterates over the routes array
   // and renders a SidebarItem for each possible route. The second Box
-  // component contains the user's music library.
+  // component contains the user's music library. The Player component
+  // doesn't hide SongItem components near the bottom of the screen, thanks
+  // to twMerge.
   return (
-    <div className="flex h-full">
+    <div className={twMerge("flex h-full",
+      player.activeID && "h-[calc(100%-80px)]")}>
       <div className="hidden md:flex flex-col gap-y-2 h-full w-[300px] 
         p-2 bg-black">
         <Box>

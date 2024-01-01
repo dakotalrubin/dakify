@@ -8,6 +8,7 @@ import { Song } from "@/types";
 import { useUser } from "@/hooks/useUser";
 import LibraryItem from "@/components/LibraryItem";
 import LikeButton from "@/components/LikeButton";
+import useOnPlay from "@/hooks/useOnPlay";
 
 // LikedItemsProps interface contains an array of songs
 interface LikedItemsProps {
@@ -22,6 +23,9 @@ const LikedItems: React.FC<LikedItemsProps> = ({ songs }) => {
 
   // Extract user data and isLoading status from custom useUser hook
   const { user, isLoading } = useUser();
+
+  // Pass the song array to the useOnPlay hook for a smart playlist
+  const onPlay = useOnPlay(songs);
 
   // Call useEffect any time user, isLoading or the page route updates
   useEffect(() => {
@@ -52,7 +56,7 @@ const LikedItems: React.FC<LikedItemsProps> = ({ songs }) => {
           <div className="flex-1">
             <LibraryItem
               data={song}
-              onClick={() => {}}
+              onClick={(id: string) => onPlay(id)}
             />
           </div>
           <LikeButton songID={song.id} />

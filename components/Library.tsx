@@ -9,6 +9,7 @@ import useUploadModal from "@/hooks/useUploadModal";
 import { useUser } from "@/hooks/useUser";
 import { Song } from "@/types";
 import LibraryItem from "./LibraryItem";
+import useOnPlay from "@/hooks/useOnPlay";
 
 // LibraryProps interface contains an array of user songs
 interface LibraryProps {
@@ -25,6 +26,9 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
 
   // Extract user info and subscription status from custom useUser hook
   const { user, subscription } = useUser();
+
+  // Pass the song array to the useOnPlay hook for a smart playlist
+  const onPlay = useOnPlay(songs);
 
   // Open a music upload modal
   const onClick = () => {
@@ -57,7 +61,7 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
           <LibraryItem
             key={item.id}
             data={item}
-            onClick={() => {}}
+            onClick={(id: string) => onPlay(id)}
           />
         ))}
       </div>

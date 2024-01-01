@@ -4,6 +4,7 @@
 import { Song } from "@/types";
 import LibraryItem from "@/components/LibraryItem";
 import LikeButton from "@/components/LikeButton";
+import useOnPlay from "@/hooks/useOnPlay";
 
 // SearchItemsProps interface contains an array of Songs
 interface SearchItemsProps {
@@ -13,6 +14,9 @@ interface SearchItemsProps {
 // SearchItems component accepts an array of Songs
 // from SearchItemsProps interface
 const SearchItems: React.FC<SearchItemsProps> = ({ songs }) => {
+  // Pass the song array to the useOnPlay hook for a smart playlist
+  const onPlay = useOnPlay(songs);
+
   // If no songs were found, notify the user
   if (songs.length === 0) {
     return (
@@ -33,7 +37,7 @@ const SearchItems: React.FC<SearchItemsProps> = ({ songs }) => {
           <div className="flex-1">
             <LibraryItem
               data={song}
-              onClick={() => {}}
+              onClick={(id: string) => onPlay(id)}
             />
           </div>
           <LikeButton songID={song.id} />
