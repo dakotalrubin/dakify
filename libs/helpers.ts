@@ -1,6 +1,6 @@
 import { Price } from "@/types";
 
-// Fetches the URL whether the app is deployed on Vercel, localhost, etc.
+// Fetch the URL whether the app is deployed on Vercel, localhost, etc.
 export const getURL = () => {
   // Automatically update the URL when the web app is deployed on Vercel.
   // Include an option for falling back on localhost deployment.

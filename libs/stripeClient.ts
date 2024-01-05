@@ -3,7 +3,7 @@ import { Stripe, loadStripe } from "@stripe/stripe-js";
 // Create a Promise that either contains a Stripe object or nothing
 let stripePromise: Promise<Stripe | null>;
 
-// Asynchronously loads the Stripe.js script and initializes a Stripe object
+// Asynchronously load the Stripe.js script and initialize a Stripe object
 export const getStripe = () => {
   if (!stripePromise) {
     stripePromise = loadStripe(
