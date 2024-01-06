@@ -140,7 +140,7 @@ const copyBillingDetailsForCustomer = async (
   }
 }
 
-// Updates a customer's current subscription status through Stripe
+// Update a customer's current subscription status through Stripe
 const manageSubscriptionStatusChange = async (
   subscriptionID: string,
   customerID: string,
@@ -189,7 +189,7 @@ const manageSubscriptionStatusChange = async (
     trial_end: subscription.trial_end ? toDateTime(subscription.trial_end).toISOString() : null
   }
 
-  // Update/insert subscription data into the database
+  // Update or insert subscription data into the database
   const { error } = await supabaseAdmin.from("subscription")
     .upsert([subscriptionData]);
 
