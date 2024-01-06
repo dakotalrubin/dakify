@@ -158,7 +158,7 @@ const manageSubscriptionStatusChange = async (
   }
 
   // Extract user ID from customer data
-  const { id: uuid } = customerData;
+  const { id: uuid } = customerData!;
 
   // Fetch Stripe subscription info
   const subscription = await stripe.subscriptions.retrieve(
@@ -190,7 +190,7 @@ const manageSubscriptionStatusChange = async (
   }
 
   // Update or insert subscription data into the database
-  const { error } = await supabaseAdmin.from("subscription")
+  const { error } = await supabaseAdmin.from("subscriptions")
     .upsert([subscriptionData]);
 
   // Notify the user of any errors
