@@ -66,3 +66,8 @@ export interface Subscription {
   trial_end?: string;
   prices?: Price;
 }
+
+// Create a type for active products and prices
+export interface ProductAndPrice extends Product {
+  prices?: Price[];
+}

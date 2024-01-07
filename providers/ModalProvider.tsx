@@ -5,9 +5,17 @@ import { useState, useEffect } from "react";
 
 import AuthModal from "@/components/AuthModal";
 import UploadModal from "@/components/UploadModal";
+import SubscribeModal from "@/components/SubscribeModal";
+import { ProductAndPrice } from "@/types";
 
-// ModalProvider component only renders client-side modals
-const ModalProvider = () => {
+// ModalProviderProps interface contains an array of products and prices
+interface ModalProviderProps {
+  products: ProductAndPrice[];
+}
+
+// ModalProvider component accepts an array of products and prices, and
+// only renders client-side modals
+const ModalProvider: React.FC<ModalProviderProps> = ({ products }) => {
   // Create a state variable to track whether a modal has been mounted
   const [isMounted, setIsMounted] = useState(false);
 
@@ -29,6 +37,7 @@ const ModalProvider = () => {
     <>
       <AuthModal />
       <UploadModal />
+      <SubscribeModal products={products}/>
     </>
   );
 }

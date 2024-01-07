@@ -9,6 +9,7 @@ import ModalProvider from "@/providers/ModalProvider";
 import ToasterProvider from "@/providers/ToasterProvider";
 import getSongsByUserID from "@/actions/getSongsByUserID";
 import Player from "@/components/Player";
+import getActiveProductsAndPrices from "@/actions/getActiveProductsAndPrices";
 
 const font = Figtree({ subsets: ['latin'] })
 
@@ -28,6 +29,9 @@ export default async function RootLayout({
   // Fetch a specific user's songs from Supabase
   const userSongs = await getSongsByUserID();
 
+  // Fetch a specific user's available Stripe products
+  const products = await getActiveProductsAndPrices();
+
   // Render the Sidebar component within a UserProvider component within a
   // SupabaseProvider user session. Dynamically render the Player component.
   // Also render a ToasterProvider component for basic user notifications.
@@ -37,7 +41,7 @@ export default async function RootLayout({
         <ToasterProvider />
         <SupabaseProvider>
           <UserProvider>
-            <ModalProvider />
+            <ModalProvider products={products}/>
             <Sidebar songs={userSongs}>
               {children}
             </Sidebar>
