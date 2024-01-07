@@ -13,6 +13,7 @@ import { toast } from "react-hot-toast";
 import Button from "./Button";
 import useAuthModal from "@/hooks/useAuthModal";
 import { useUser } from "@/hooks/useUser";
+import usePlayer from "@/hooks/usePlayer";
 
 // HeaderProps interface contains ReactNode children
 // and optional className string
@@ -36,12 +37,16 @@ const Header: React.FC<HeaderProps> = ({ children, className }) => {
   // Extract user data from useUser hook to check subscription status
   const { user, subscription } = useUser();
 
+  // Create a player instance with default values from the usePlayer hook
+  const player = usePlayer();
+
   // Allow the user to log out of their account
   const handleLogout = async () => {
     // Wait for a Promise to be returned
     const { error } = await supabaseClient.auth.signOut();
 
-    // Reset any song playing after logging out
+    // Reset any song playing after logging out and refresh the page
+    player.reset();
     router.refresh();
 
     // If there's a logout error, show the user a notification

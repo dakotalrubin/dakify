@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     });
 
     // Return customer session ID
-    return NextResponse.json({ sessionID: session.id });
+    return NextResponse.json({ sessionId: session.id });
   } catch (error: any) {
     // Return a "500 Internal Server Error" status code for server-side issues
     return new NextResponse(

@@ -4,8 +4,8 @@ import { Price } from "@/types";
 export const getURL = () => {
   // Automatically update the URL when the web app is deployed on Vercel.
   // Include an option for falling back on localhost deployment.
-  let url = process.env.NEXT_PUBLIC_SITE_URL ??
-    process.env.NEXT_PUBLIC_VERCEL_URL ??
+  let url = process?.env?.NEXT_PUBLIC_SITE_URL ??
+    process?.env?.NEXT_PUBLIC_VERCEL_URL ??
     "http://localhost:3000";
 
   // If the URL has been changed, make sure it's still secure
@@ -36,7 +36,7 @@ export const postData = async ({ url, data }: {
   // If the response wasn't successful, log it and throw an error
   if (!response.ok) {
     console.log("POST error: ", { url, data, response });
-    throw new Error(response.statusText);
+    throw Error(response.statusText);
   }
 
   return response.json();

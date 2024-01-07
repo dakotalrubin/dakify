@@ -10,6 +10,7 @@ import { useUser } from "@/hooks/useUser";
 import { Song } from "@/types";
 import LibraryItem from "./LibraryItem";
 import useOnPlay from "@/hooks/useOnPlay";
+import useSubscribeModal from "@/hooks/useSubscribeModal";
 
 // LibraryProps interface contains an array of user songs
 interface LibraryProps {
@@ -18,6 +19,9 @@ interface LibraryProps {
 
 // Library component accepts an array of user songs from LibraryProps interface
 const Library: React.FC<LibraryProps> = ({ songs }) => {
+  // Create a subscribe modal and enable onOpen and onClose methods
+  const subscribeModal = useSubscribeModal();
+
   // Allow the use of AuthModal methods from the useAuthModal hook
   const authModal = useAuthModal();
 
@@ -38,7 +42,10 @@ const Library: React.FC<LibraryProps> = ({ songs }) => {
     }
 
     // Check for subscription status
-    // ...
+    // Open a subscribe modal if the user isn't subscribed
+    if (!subscription) {
+      return subscribeModal.onOpen();
+    }
 
     return uploadModal.onOpen();
   };
