@@ -5,6 +5,7 @@ import Image from "next/image";
 
 import { Song } from "@/types";
 import useLoadImage from "@/hooks/useLoadImage";
+import usePlayer from "@/hooks/usePlayer";
 
 // LibraryItemProps interface contains song data and an optional onClick method
 interface LibraryItemProps {
@@ -18,14 +19,17 @@ const LibraryItem: React.FC<LibraryItemProps> = ({ data, onClick }) => {
   // Get song image URL from the useLoadImage hook
   const imageURL = useLoadImage(data);
 
+  // Create a player instance with default values from the usePlayer hook
+  const player = usePlayer();
+
   // If there's an onClick method, pass it the song data id
   const handleClick = () => {
     if (onClick) {
       return onClick(data.id);
     }
 
-    // Turn on the song player
-    // ...
+    // Update the player with the song data id
+    return player.setID(data.id);
   }
 
   // Return a library item in the sidebar
