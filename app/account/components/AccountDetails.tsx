@@ -79,7 +79,7 @@ const AccountDetails = () => {
       {subscription && (
         <div className="flex flex-col gap-y-4">
           <p>
-            You're on the <b>{subscription?.prices?.products?.name}</b> plan.
+            You are on the <b>{subscription?.prices?.products?.name}</b> plan.
           </p>
           <Button
             className="w-[300px]"

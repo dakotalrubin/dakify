@@ -40,7 +40,7 @@ const LikedItems: React.FC<LikedItemsProps> = ({ songs }) => {
   if (songs.length === 0) {
     return (
       <div className="flex flex-col w-full px-6 gap-y-2 text-neutral-400">
-        You haven't liked any songs.
+        You have no liked songs.
       </div>
     );
   }
